@@ -5,8 +5,6 @@
 #include <QTime>
 #include <QMessageBox>
 
-#define IN_ACCOUNT                  "psi/account"
-
 #define SVN_ACCOUNT                 "account[]"
 #define SVN_ACCOUNT_ACTIVE          SVN_ACCOUNT":"AVN_ACTIVE
 #define SVN_ACCOUNT_STREAM          SVN_ACCOUNT":"AVN_STREAMJID
@@ -371,7 +369,7 @@ void AccountManager::onRostersViewContextMenu(IRosterIndex *AIndex, Menu *AMenu)
     if (account)
     {
       Action *action = new Action(AMenu);
-      action->setIcon(SYSTEM_ICONSETFILE,IN_ACCOUNT);
+      action->setIcon(RSR_STORAGE_MENUICONS,MNI_ACCOUNT_CHANGE);
       action->setText(tr("Modify account"));
       action->setData(ADR_OPTIONS_NODE,ON_ACCOUNTS"::"+account->accountId());
       connect(action,SIGNAL(triggered(bool)),SLOT(onOpenOptionsDialogByAction(bool)));

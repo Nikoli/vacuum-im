@@ -4,7 +4,6 @@
 #include <QFileDialog>
 #include "edititemdialog.h"
 
-#define IN_VCARD                  "psi/vCard"
 
 VCardDialog::VCardDialog(IVCardPlugin *AVCardPlugin, const Jid &AStreamJid, const Jid &AContactJid)
 {
@@ -17,8 +16,7 @@ VCardDialog::VCardDialog(IVCardPlugin *AVCardPlugin, const Jid &AStreamJid, cons
   FStreamJid = AStreamJid;
   FVCardPlugin = AVCardPlugin;
 
-  SkinIconset *iconset = Skin::getSkinIconset(SYSTEM_ICONSETFILE);
-  setWindowIcon(iconset->iconByName(IN_VCARD));
+  IconStorage::staticStorage(RSR_STORAGE_MENUICONS)->insertAutoIcon(this,MNI_VCARD,0,0,"windowIcon");
   setWindowTitle(tr("vCard - %1").arg(FContactJid.full()));
 
   ui.pbtPublish->setVisible(FContactJid && FStreamJid);

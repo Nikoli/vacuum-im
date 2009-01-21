@@ -8,12 +8,13 @@
 #include <QWidget>
 #include "../../definations/actiongroups.h"
 #include "../../definations/commandline.h"
+#include "../../definations/resources.h"
+#include "../../definations/menuicons.h"
 #include "../../interfaces/ipluginmanager.h"
 #include "../../interfaces/isettings.h"
 #include "../../interfaces/imainwindow.h"
 #include "../../interfaces/itraymanager.h"
 #include "../../utils/action.h"
-#include "../../utils/skin.h"
 #include "settings.h"
 #include "optionsdialog.h"
 #include "profiledialog.h"
@@ -90,13 +91,11 @@ protected slots:
   void onOptionsDialogRejected();
   void onOptionsDialogClosed();
   void onPluginManagerQuit();
-  void onSystemIconsetChanged();
 private:
   IPluginManager *FPluginManager;
   IMainWindowPlugin *FMainWindowPlugin;
   ITrayManager *FTrayManager;
 private:
-  SkinIconset *FSystemIconset;
   Action *FOpenOptionsDialogAction;
   Action *FOpenProfileDialogAction;
   Menu *FProfileMenu;

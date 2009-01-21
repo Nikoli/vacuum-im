@@ -5,11 +5,12 @@
 #include <QSortFilterProxyModel>
 #include "../../definations/archiveindextyperole.h"
 #include "../../definations/actiongroups.h"
+#include "../../definations/resources.h"
+#include "../../definations/menuicons.h"
 #include "../../interfaces/iroster.h"
 #include "../../interfaces/imessenger.h"
 #include "../../interfaces/isettings.h"
 #include "../../interfaces/imessagearchiver.h"
-#include "../../utils/skin.h"
 #include "ui_viewhistorywindow.h"
 
 class ViewHistoryWindow;

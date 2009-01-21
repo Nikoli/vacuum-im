@@ -14,9 +14,6 @@
 #define TDR_CONF                Qt::UserRole+5
 #define TDR_URL                 Qt::UserRole+6
 
-#define IN_BOOKMARK_CONF        "psi/groupChat"
-#define IN_BOOKMARK_URL         "psi/www"
-
 EditBookmarksDialog::EditBookmarksDialog(IBookMarks *ABookmarks, const Jid &AStreamJid, 
                                          const QList<IBookMark> &AList, QWidget *AParent) : QDialog(AParent)
 {
@@ -75,9 +72,9 @@ void EditBookmarksDialog::setBookmarkToRow(int ARow, const IBookMark &ABookmark)
   QTableWidgetItem *nameItem = new QTableWidgetItem;
   nameItem->setText(ABookmark.name);
   if (ABookmark.conference.isEmpty())
-    nameItem->setIcon(Skin::getSkinIconset(SYSTEM_ICONSETFILE)->iconByName(IN_BOOKMARK_URL));
+    nameItem->setIcon(IconStorage::staticStorage(RSR_STORAGE_MENUICONS)->getIcon(MNI_BOOKMARKS_URL));
   else
-    nameItem->setIcon(Skin::getSkinIconset(SYSTEM_ICONSETFILE)->iconByName(IN_BOOKMARK_CONF));
+    nameItem->setIcon(IconStorage::staticStorage(RSR_STORAGE_MENUICONS)->getIcon(MNI_BOOKMARKS_ROOM));
   if (!ABookmark.conference.isEmpty() && ABookmark.autojoin)
   {
     QFont font = nameItem->font();

@@ -15,14 +15,6 @@
 #define BIN_SPLITTER_STATE    "ArchiveWindowSplitterState"
 #define BIN_WINDOW_GEOMETRY   "ArchiveWindowGeometry"
 
-#define IN_HISTORY            "psi/history"
-#define IN_GROUP_KIND         ""
-#define IN_FILTER             ""
-#define IN_RENAME             ""
-#define IN_REMOVE             ""
-#define IN_RELOAD             ""
-
-
 //SortFilterProxyModel
 SortFilterProxyModel::SortFilterProxyModel(ViewHistoryWindow *AWindow, QObject *AParent) : QSortFilterProxyModel(AParent)
 {
@@ -73,7 +65,7 @@ ViewHistoryWindow::ViewHistoryWindow(IMessageArchiver *AArchiver, const Jid &ASt
   ui.setupUi(this);
   setAttribute(Qt::WA_DeleteOnClose,true);
   setWindowTitle(tr("View History - %1").arg(AStreamJid.bare()));
-  setWindowIcon(Skin::getSkinIconset(SYSTEM_ICONSETFILE)->iconByName(IN_HISTORY));
+  IconStorage::staticStorage(RSR_STORAGE_MENUICONS)->insertAutoIcon(this,MNI_HISTORY_VIEW,0,0,"windowIcon");
 
   FRoster = NULL;
   FViewWidget = NULL;
@@ -726,7 +718,7 @@ void ViewHistoryWindow::rebuildModel()
 void ViewHistoryWindow::createGroupKindMenu()
 {
   FGroupKindMenu = new Menu(this);
-  FGroupKindMenu->setIcon(SYSTEM_ICONSETFILE,IN_GROUP_KIND);
+  FGroupKindMenu->setIcon(RSR_STORAGE_MENUICONS,MNI_HISTORY_GROUPS);
   FGroupKindMenu->setTitle(tr("Groups"));
 
   Action *action = new Action(FGroupKindMenu);
@@ -818,27 +810,27 @@ void ViewHistoryWindow::createHeaderActions()
 {
   FFilterBy = new Action(FGroupsTools->toolBar());
   FFilterBy->setText(tr("Filter"));
-  FFilterBy->setIcon(SYSTEM_ICONSETFILE,IN_FILTER);
+  FFilterBy->setIcon(RSR_STORAGE_MENUICONS,MNI_HISRORY_FILTER);
   FFilterBy->setEnabled(false);
   connect(FFilterBy,SIGNAL(triggered(bool)),SLOT(onHeaderActionTriggered(bool)));
   FGroupsTools->addAction(FFilterBy,AG_AWGT_ARCHIVE_DEFACTIONS,false);
 
   FRename = new Action(FGroupsTools->toolBar());
   FRename->setText(tr("Rename"));
-  FRename->setIcon(SYSTEM_ICONSETFILE,IN_RENAME);
+  FRename->setIcon(RSR_STORAGE_MENUICONS,MNI_HISTORY_RENAME);
   FRename->setEnabled(false);
   connect(FRename,SIGNAL(triggered(bool)),SLOT(onHeaderActionTriggered(bool)));
   FGroupsTools->addAction(FRename,AG_AWGT_ARCHIVE_DEFACTIONS,false);
 
   FRemove = new Action(FGroupsTools->toolBar());
   FRemove->setText(tr("Remove"));
-  FRemove->setIcon(SYSTEM_ICONSETFILE,IN_REMOVE);
+  FRemove->setIcon(RSR_STORAGE_MENUICONS,MNI_HISTORY_REMOVE);
   connect(FRemove,SIGNAL(triggered(bool)),SLOT(onHeaderActionTriggered(bool)));
   FGroupsTools->addAction(FRemove,AG_AWGT_ARCHIVE_DEFACTIONS,false);
 
   FReload = new Action(FGroupsTools->toolBar());
   FReload->setText(tr("Reload"));
-  FReload->setIcon(SYSTEM_ICONSETFILE,IN_RELOAD);
+  FReload->setIcon(RSR_STORAGE_MENUICONS,MNI_HISTORY_RELOAD);
   connect(FReload,SIGNAL(triggered(bool)),SLOT(onHeaderActionTriggered(bool)));
   FGroupsTools->addAction(FReload,AG_AWGT_ARCHIVE_DEFACTIONS,false);
 }

@@ -11,9 +11,6 @@
 #define SETTINGS_VERSION        "1.0"
 #define DEFAULT_PROFILE         "Default"
 
-#define IN_OPTIONS              "psi/options"
-#define IN_PROFILE              "psi/profile"
-
 #define ADR_PROFILE             Action::DR_Parametr1
 
 SettingsPlugin::SettingsPlugin()
@@ -65,21 +62,18 @@ bool SettingsPlugin::initConnections(IPluginManager *APluginManager, int &/*AIni
 
 bool SettingsPlugin::initObjects()
 {
-  FSystemIconset = Skin::getSkinIconset(SYSTEM_ICONSETFILE);
-  connect(FSystemIconset,SIGNAL(iconsetChanged()),SLOT(onSystemIconsetChanged()));
-
   FProfileMenu = new Menu;
-  FProfileMenu->setIcon(SYSTEM_ICONSETFILE,IN_PROFILE);
+  FProfileMenu->setIcon(RSR_STORAGE_MENUICONS,MNI_SETTINGS_PROFILES);
   FProfileMenu->setTitle(tr("Profiles"));
 
   FOpenOptionsDialogAction = new Action(this);
   FOpenOptionsDialogAction->setEnabled(false);
-  FOpenOptionsDialogAction->setIcon(SYSTEM_ICONSETFILE,IN_OPTIONS);
+  FOpenOptionsDialogAction->setIcon(RSR_STORAGE_MENUICONS,MNI_SETTINGS_OPTIONS);
   FOpenOptionsDialogAction->setText(tr("Options..."));
   connect(FOpenOptionsDialogAction,SIGNAL(triggered(bool)),SLOT(onOpenOptionsDialogByAction(bool)));
 
   FOpenProfileDialogAction = new Action(FProfileMenu);
-  FOpenProfileDialogAction->setIcon(SYSTEM_ICONSETFILE,IN_PROFILE);
+  FOpenProfileDialogAction->setIcon(RSR_STORAGE_MENUICONS,MNI_SETTINGS_EDIT_PROFILES);
   FOpenProfileDialogAction->setText(tr("Edit profiles..."));
   FProfileMenu->addAction(FOpenProfileDialogAction,AG_DEFAULT+1);
   connect(FOpenProfileDialogAction,SIGNAL(triggered(bool)),SLOT(onOpenProfileDialogByAction(bool)));
@@ -418,7 +412,7 @@ QDialog *SettingsPlugin::openOptionsDialog(const QString &ANode, QWidget *AParen
   if (FOptionsDialog.isNull())
   {
     FOptionsDialog = new OptionsDialog(AParent);
-    FOptionsDialog->setWindowIcon(FSystemIconset->iconByName(IN_OPTIONS));
+    IconStorage::staticStorage(RSR_STORAGE_MENUICONS)->insertAutoIcon(FOptionsDialog,MNI_SETTINGS_OPTIONS,0,0,"windowIcon");
     connect(FOptionsDialog, SIGNAL(accepted()),SLOT(onOptionsDialogAccepted()));
     connect(FOptionsDialog, SIGNAL(rejected()),SLOT(onOptionsDialogRejected()));
     connect(FOptionsDialog, SIGNAL(closed()),SLOT(onOptionsDialogClosed()));
@@ -496,7 +490,7 @@ void SettingsPlugin::updateSettings()
 void SettingsPlugin::addProfileAction(const QString &AProfile)
 {
   Action *action = new Action(FProfileMenu);
-  action->setIcon(SYSTEM_ICONSETFILE,IN_PROFILE);
+  action->setIcon(RSR_STORAGE_MENUICONS,MNI_SETTINGS_PROFILE);
   action->setText(AProfile);
   action->setCheckable(true);
   action->setData(ADR_PROFILE,AProfile);
@@ -581,12 +575,6 @@ void SettingsPlugin::onOptionsDialogClosed()
 void SettingsPlugin::onPluginManagerQuit()
 {
   setProfileClosed();
-}
-
-void SettingsPlugin::onSystemIconsetChanged()
-{
-  if (!FOptionsDialog.isNull())
-    FOptionsDialog->setWindowIcon(FSystemIconset->iconByName(IN_OPTIONS));
 }
 
 Q_EXPORT_PLUGIN2(SettingsPlugin, SettingsPlugin)

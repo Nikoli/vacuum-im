@@ -15,8 +15,6 @@
 #define SVN_COLLAPSE_ACCOUNT_NS           SVN_COLLAPSE_ACCOUNT "[]"
 #define SVN_COLLAPSE_ACCOUNT_NS_GROUP     SVN_COLLAPSE_ACCOUNT_NS ":" SVN_GROUP
 
-#define IN_STATUS_OFFLINE                 "status/offline"
-
 RostersViewPlugin::RostersViewPlugin()
 {
   FRostersModel = NULL;
@@ -140,7 +138,7 @@ bool RostersViewPlugin::initObjects()
     FMainWindowPlugin->mainWindow()->rostersWidget()->insertWidget(0,FRostersView);
 
     FShowOfflineAction = new Action(this);
-    FShowOfflineAction->setIcon(STATUS_ICONSETFILE,IN_STATUS_OFFLINE);
+    FShowOfflineAction->setIcon(RSR_STORAGE_MENUICONS,MNI_ROSTERVIEW_SHOW_OFFLINE);
     FShowOfflineAction->setToolTip(tr("Show offline contacts"));
     FShowOfflineAction->setCheckable(true);
     connect(FShowOfflineAction,SIGNAL(triggered(bool)),SLOT(onShowOfflineContactsAction(bool)));
