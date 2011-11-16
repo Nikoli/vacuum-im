@@ -88,11 +88,12 @@ struct IArchiveCollection
 
 struct IArchiveModification
 {
-	enum Action {
+	enum ModifyAction {
 		Created,
 		Modified,
 		Removed
-	} action;
+	};
+	ModifyAction action;
 	IArchiveHeader header;
 };
 
@@ -140,6 +141,40 @@ class IArchiveHandler
 public:
 	virtual QObject *instance() =0;
 	virtual bool archiveMessage(int AOrder, const Jid &AStreamJid, Message &AMessage, bool ADirectionIn) =0;
+};
+
+class IArchiveEngine
+{
+public:
+	enum Capabilities {
+		DirectArchiving     = 0x0001,
+		ManualArchiving     = 0x0002,
+		AutomaticArchiving  = 0x0004,
+		ArchiveManagement   = 0x0008,
+		Replication         = 0x0010,
+		TextSearch          = 0x0020
+	};
+public:
+	virtual QObject *instance() =0;
+	virtual QUuid engineId() const =0;
+	virtual QString engineName() const =0;
+	virtual QString engineDescription() const =0;
+	virtual int capabilities(const Jid &AStreamJid) const =0;
+	virtual bool isSupported(const Jid &AStreamJid) const =0;
+	virtual bool saveNote(const Jid &AStreamJid, const Message &AMessage, bool ADirectionIn) =0;
+	virtual bool saveMessage(const Jid &AStreamJid, const Message &AMessage, bool ADirectionIn) =0;
+	virtual QString saveCollection(const Jid &AStreamJid, const IArchiveCollection &ACollection) =0;
+	virtual QString removeCollections(const Jid &AStreamJid, const IArchiveRequest &ARequest, bool AOpened = false) =0;
+	virtual QString loadHeaders(const Jid AStreamJid, const IArchiveRequest &ARequest, const QString &AAfter = QString::null) =0;
+	virtual QString loadCollection(const Jid AStreamJid, const IArchiveHeader &AHeader, const QString &AAfter = QString::null) =0;
+	virtual QString loadModifications(const Jid &AStreamJid, const QDateTime &AStart, int ACount, const QString &AAfter = QString::null) =0;
+protected:
+	virtual void requestFailed(const QString &AId, const QString &AError) =0;
+	virtual void collectionSaved(const QString &AId, const IArchiveHeader &AHeader) =0;
+	virtual void collectionsRemoved(const QString &AId, const IArchiveRequest &ARequest) =0;
+	virtual void headersLoaded(const QString &AId, const QList<IArchiveHeader> &AHeaders, const IArchiveResultSet &AResult) =0;
+	virtual void collectionLoaded(const QString &AId, const IArchiveCollection &ACollection, const IArchiveResultSet &AResult) =0;
+	virtual void modificationsLoaded(const QString &AId, const IArchiveModifications &AModifs, const IArchiveResultSet &AResult) =0;
 };
 
 class IArchiveWindow
@@ -253,6 +288,7 @@ protected:
 };
 
 Q_DECLARE_INTERFACE(IArchiveHandler,"Vacuum.Plugin.IArchiveHandler/1.0")
+Q_DECLARE_INTERFACE(IArchiveEngine,"Vacuum.Plugin.IArchiveEngine/1.0")
 Q_DECLARE_INTERFACE(IArchiveWindow,"Vacuum.Plugin.IArchiveWindow/1.0")
 Q_DECLARE_INTERFACE(IMessageArchiver,"Vacuum.Plugin.IMessageArchiver/1.0")
 
