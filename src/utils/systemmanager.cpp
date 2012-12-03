@@ -1,13 +1,18 @@
 #include "systemmanager.h"
 #include <thirdparty/idle/idle.h>
+#include <thirdparty/screenmodechecker/screenmodechecker.h>
+#include <QDebug>
 
 struct SystemManager::SystemManagerData
 {
 	SystemManagerData() {
 		idle = NULL;
+		screenmode = NULL;
 		idleSeconds = 0;
 	}
 	Idle *idle;
+	ScreenModeChecker *screenmode;
+
 	int idleSeconds;
 };
 
@@ -20,6 +25,7 @@ SystemManager *SystemManager::instance()
 	{
 		manager = new SystemManager;
 		manager->d->idle = new Idle;
+		manager->d->screenmode = new ScreenModeChecker;
 		connect(manager->d->idle,SIGNAL(secondsIdle(int)),manager,SLOT(onIdleChanged(int)));
 	}
 	return manager;
@@ -39,6 +45,19 @@ void SystemManager::startSystemIdle()
 {
 	if (d->idle && !d->idle->isActive())
 		d->idle->start();
+}
+
+bool SystemManager::isScreenSaverRunning()
+{
+	return !d->screenmode->isDummy() ? d->screenmode->isScreensaverActive() : false;
+}
+
+bool SystemManager::isFullScreenMode()
+{
+	qDebug() << "isDummy?" << d->screenmode->isDummy();
+	qDebug() << "isFull?" << d->screenmode->isFullscreenAppActive();
+	qDebug() << "isScreen?" << d->screenmode->isScreensaverActive();
+	return !d->screenmode->isDummy() ? d->screenmode->isFullscreenAppActive() : false;
 }
 
 void SystemManager::stopSystemIdle()

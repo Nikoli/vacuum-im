@@ -1,4 +1,5 @@
 #include "notifications.h"
+#include <QDebug>
 
 #include <QProcess>
 #include <QVBoxLayout>
@@ -161,6 +162,8 @@ bool Notifications::initObjects()
 
 	FNetworkAccessManager = FUrlProcessor!=NULL ? FUrlProcessor->networkAccessManager() : new QNetworkAccessManager(this);
 
+	NotifyWidget::setMainWindow(FMainWindowPlugin->mainWindow());
+
 	return true;
 }
 
@@ -254,13 +257,17 @@ int Notifications::appendNotification(const INotification &ANotification)
 	{
 		if (!showNotifyByHandler(INotification::PopupWindow,notifyId,record.notification))
 		{
-			record.popupWidget = new NotifyWidget(record.notification);                                                
-			connect(record.popupWidget,SIGNAL(notifyActivated()),SLOT(onWindowNotifyActivated()));
-			connect(record.popupWidget,SIGNAL(notifyRemoved()),SLOT(onWindowNotifyRemoved()));
-			connect(record.popupWidget,SIGNAL(windowDestroyed()),SLOT(onWindowNotifyDestroyed()));
-			record.popupWidget->setAnimated(Options::node(OPV_NOTIFICATIONS_ANIMATIONENABLE).value().toBool());
-			record.popupWidget->setNetworkAccessManager(FNetworkAccessManager);
-			record.popupWidget->appear();
+			if (!SystemManager::isFullScreenMode() || !SystemManager::isScreenSaverRunning())
+			{
+				qDebug() << "NOTIFY CREATED";
+				record.popupWidget = new NotifyWidget(record.notification);
+				connect(record.popupWidget,SIGNAL(notifyActivated()),SLOT(onWindowNotifyActivated()));
+				connect(record.popupWidget,SIGNAL(notifyRemoved()),SLOT(onWindowNotifyRemoved()));
+				connect(record.popupWidget,SIGNAL(windowDestroyed()),SLOT(onWindowNotifyDestroyed()));
+				record.popupWidget->setAnimated(Options::node(OPV_NOTIFICATIONS_ANIMATIONENABLE).value().toBool());
+				record.popupWidget->setNetworkAccessManager(FNetworkAccessManager);
+				record.popupWidget->appear();
+			}
 		}
 	}
 

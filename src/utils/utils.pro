@@ -4,7 +4,7 @@ TARGET             = $$VACUUM_UTILS_NAME
 TEMPLATE           = lib
 VERSION            = $$VACUUM_UTILS_ABI
 CONFIG            += dll
-QT                += xml network
+QT                += xml network dbus
 DEFINES           += UTILS_DLL QXT_STATIC
 
 DEPENDPATH        += ..
@@ -17,7 +17,7 @@ win32 {
 }
 
 LIBS              += -L../libs
-LIBS              += -lzlib -lidn -lminizip -lqxtglobalshortcut -lidle
+LIBS              += -lzlib -lidn -lminizip -lqxtglobalshortcut -lidle -lscreenmodechecker
 macx {
   QMAKE_LFLAGS    += -framework Carbon -framework IOKit -framework Cocoa
 } else:unix:!haiku {

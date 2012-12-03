@@ -11,8 +11,13 @@ class UTILS_EXPORT SystemManager :
 	struct SystemManagerData;
 public:
 	static SystemManager *instance();
+	//Idle
 	static int systemIdle();
 	static bool isSystemIdleActive();
+	//ScreenModeChecker
+	static bool isScreenSaverRunning();
+	static bool isFullScreenMode();
+
 public:
 	void startSystemIdle();
 	void stopSystemIdle();
