@@ -1,8 +1,8 @@
 file(GLOB SOURCES "*.cpp")
 file(GLOB UIS "*.ui")
 set(HEADERS "aboutbox.h"
-		"pluginmanager.h"
-		"setuppluginsdialog.h")
+			"pluginmanager.h"
+			"setuppluginsdialog.h")
 
 qt4_wrap_cpp(MOC_SOURCES ${HEADERS})
 qt4_wrap_ui(UI_HEADERS ${UIS})

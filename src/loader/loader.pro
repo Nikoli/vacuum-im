@@ -3,10 +3,10 @@ include(../make/config.inc)
 TARGET             = $$VACUUM_LOADER_NAME
 TEMPLATE           = app
 QT                += xml
-LIBS              += -L../libs
-LIBS              += -l$$VACUUM_UTILS_NAME
+LIBS              += -L../libs -l$$VACUUM_UTILS_NAME -lbreakpad
 DEPENDPATH        += ..
 INCLUDEPATH       += ..
+INCLUDEPATH       += ../thirdparty/breakpad
 DESTDIR            = ../..
 include(loader.pri)
 

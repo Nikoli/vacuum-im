@@ -3,10 +3,11 @@ FORMS   = setuppluginsdialog.ui \
 
 HEADERS = pluginmanager.h \
           setuppluginsdialog.h \
-          aboutbox.h
+		  aboutbox.h \
+		  crashhandler.h
 
 SOURCES = main.cpp \
           pluginmanager.cpp \
           setuppluginsdialog.cpp \
-          aboutbox.cpp
-
+		  aboutbox.cpp \
+		  crashhandler.cpp
